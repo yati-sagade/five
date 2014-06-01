@@ -13,7 +13,7 @@ from django.contrib.auth.decorators import login_required
 
 from .forms import UserCreationForm
 from .places import nearby_search
-from .models import Place, UserProfile
+from .models import Place, UserProfile, Notification
 from .utilities import random_password, json_response, to_dict, get_post_data
 from .utilities import http_basic_auth
 
@@ -74,6 +74,14 @@ def check_in(request, place_id):
         profile = request.user.userprofile
         profile.current_location = place
         profile.save()
+
+        # Build notifications for people at this location.
+        nearby_profiles = UserProfile.objects.filter(current_location=place)
+        for profile in nearby_profiles:
+            Notification.objects.create(user=profile.user, data=json.dumps({
+                'image': profile.avatar_url(),
+                'data': '{} is around you. Go say hi!'.format(profile.user.username)
+            }))
         ret = ({'success': True}, 200)
 
     return json_response(*ret)
@@ -161,9 +169,6 @@ def get_nearby_places(request, lat, lon, rad=1000):
         places.append(place)
     resp = {'data': [place.to_dict() for place in places]}
     return json_response(resp)
-
-
-
 
 
 class HomeView(View):
@@ -255,13 +260,17 @@ def ping_view(request, data):
 
 ALPHABET = 'abcdefghijklmnopqrstuvwxyz '
 
-@csrf_exempt
+@require_http_methods(['POST'])
+@http_basic_auth
+@ensure_csrf_cookie
 def get_notification(request):
     '''
     Return a notification with some content with a 40% chance.
 
     '''
-    msg = ''
-    return json_response({'data': msg, 'picture': '/static/core/img/1.png'})
+    all_notifs = Notification.objects.filter(user=request.user)
+    data = [json.loads(notif) for notif in all_notifs]
+    all_notifs.delete()
+    return json_response({'data': data})
 
 

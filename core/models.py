@@ -206,3 +206,14 @@ class PlacePicture(models.Model):
     place = models.ForeignKey(Place)
 
 
+class Notification(models.Model):
+    '''
+    A transient notification for a user, purged when the client reads it.
+    
+    '''
+    # The user for whom this is intended
+    user = models.ForeignKey(User)
+
+    # The json data for the notification
+    data = models.TextField()
+    

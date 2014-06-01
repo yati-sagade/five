@@ -38,6 +38,6 @@ urlpatterns = patterns('',
     # GET/PUT/DELETE API endpoint for a particular user.
     url(r'^user/(?P<uid>\d+)/?$', userview, name='five-get-user'),
 
-    url(r'^notifyme/?$', get_notification, name='five-get-notification'),
+    url(r'^pull/?$', get_notification, name='five-pull-updates'),
 
 )
