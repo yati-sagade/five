@@ -23,7 +23,7 @@ def nearby_search(loc, rad):
         'sensor': 'true',
         'rankby': 'distance',
         # TODO: add additional types here
-        'types': 'cafe|movie_theater|health|book_store|electronics_store|'
+        'types': 'finance|cafe|movie_theater|health|book_store|electronics_store|'
                  'gym|night_club'
 
     }
