@@ -76,7 +76,7 @@ def check_in(request, place_id):
         profile.save()
 
         # Build notifications for people at this location.
-        nearby_profiles = UserProfile.objects.filter(current_location=place)
+        nearby_profiles = UserProfile.objects.filter(current_location=place).exclude(user=request.user)
         for profile in nearby_profiles:
             Notification.objects.create(user=profile.user, data=json.dumps({
                 'image': profile.avatar_url(),
@@ -269,7 +269,7 @@ def get_notification(request):
 
     '''
     all_notifs = Notification.objects.filter(user=request.user)
-    data = [json.loads(notif) for notif in all_notifs]
+    data = [json.loads(notif.data) for notif in all_notifs]
     all_notifs.delete()
     return json_response({'data': data})
 
