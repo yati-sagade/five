@@ -1,0 +1,6 @@
+<span id="currentuser">{{ user.username }}</span>
+<form id="signoutform" action="{% url 'five-logout' %}"
+                       method="post">
+    {% csrf_token %}
+    <input type="submit" value="Sign out" />
+</form>

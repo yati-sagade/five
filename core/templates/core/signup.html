@@ -1,0 +1,15 @@
+<div id="desc">
+    Five allows you to meet new people. Real people.
+</div>
+
+
+<div id="signup">
+    <span id="signuptxt">Sign up for free</span>
+    <form id="signupform" method="post" action="{% url 'five-create-user' %}">
+        {% csrf_token %}
+        <input type="email" id="email" name="email" placeholder="email" />
+        <input type="text" id="handle" name="handle" placeholder="choose a handle" />
+        <input type="password" id="password" name="password" placeholder="a strong password" />
+        <input type="submit" id="signupbn" value="Sign up" />
+    </form>
+</div>

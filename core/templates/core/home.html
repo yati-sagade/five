@@ -1,0 +1,48 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+
+{% block main %}
+<div id="main">
+    <button id="checkinbn"><b>Check in</b></button>
+</div>
+<div id="places">
+<ul id="placeslist"></ul>
+</div>
+{% endblock %}
+
+{% block script %}
+{{ block.super }}
+<script src="{% static 'core/js/core.js' %}"></script>
+<script>
+    $(document).ready(function(){
+        $('#checkinbn').click(function(){
+            core.getNearByPlaces(function(info){
+                if (info.error !== undefined)
+                {
+                    $('#places').append('<span>' +
+                                            info.error.error +
+                                        '</span>');
+                }
+                else
+                {
+                    info.data.forEach(function(place){
+                        var u = '/checkin/' + place.id + '/';
+                        var content = ' <li><span>' + place.name + '</span>' +
+                                      '     <input type="button" id="' + place.id + '" value="check in" class="checkinbn" /></li>';
+                        $('#placeslist').append(content);
+                    }); 
+                } 
+            });
+        });
+
+        $("#placeslist").on('click', '.checkinbn', function(){
+            core.checkin(this.id, function(result){
+                console.log(result);
+            });
+        });
+
+    });
+</script>
+{% endblock %}
+

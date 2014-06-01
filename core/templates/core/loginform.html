@@ -1,0 +1,8 @@
+<div id="login">
+    <form id="loginform" method="post" action="{% url 'five-login' %}">
+        {% csrf_token %}
+        <input type="text" id="login-handle" name="handle" placeholder="handle" />
+        <input type="password" id="login-password" name="password" placeholder="password" />
+        <input type="submit" id="loginbn" value="Sign in" />
+    </form>
+</div>

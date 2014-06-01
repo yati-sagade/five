@@ -1,0 +1,22 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block main %}
+<div id="places">
+    <ul id="placeslist"></ul>
+</div>
+{% endblock %}
+
+{% block script %}
+{{ block.super }}
+<script src="{% static 'core/js/core.js' %}"></script>
+<script>
+    core.getNearByPlaces(function(response){
+        for (var i = 0; i < response.results.length; ++i) {
+            $('#placeslist').append('<li>' + response.results[i].name + '</li>');
+        }
+    });
+</script>
+{% endblock %}
+
+

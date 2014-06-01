@@ -1,0 +1,44 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+
+{% block header %}
+
+{{ block.super }}
+
+{% if not user.is_authenticated %}
+
+{% include "core/loginform.html" %}
+
+{% endif %}
+
+{% endblock %}
+
+
+{% block main %}
+
+<div id="messages">
+{% for message in messages %}
+{{ message }}
+{% endfor %}
+</div>
+
+{% if not user.is_authenticated %}
+
+<div id="main">
+    {% include "core/signup.html" %}
+</div>
+
+{% endif %}
+
+{% endblock %}
+
+
+{% block script %}
+{{ block.super }}
+    <script src="{% static "core/js/core.js" %}"></script>
+{% endblock %}
+
+
+        
+
